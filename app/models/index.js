@@ -1,18 +1,26 @@
+
+//creates db, makes db connection
+
 const Sequelize = require('sequelize');
 const databaseConfig = require('../../config/database.js');
 const fs = require('fs');
 const path = require('path');
 const app = require('../../index');
 const db = {};
+
+//creates db
 const sequelize = new Sequelize(databaseConfig[app.settings.env]);
 global.sequelize = sequelize;
 if (!databaseConfig[app.settings.env]) {
   throw new Error(`Database configuration object for missing for environment ${app.settings.env}`);
 }
 
+//autheticates if db made
 sequelize.authenticate().then(function () {
   global.log.info('Database connection has been established successfully.');
 })
+
+//readdirSync returns all the names of the file in the curr directory
 fs.readdirSync(__dirname).filter(file => {
   return (file.indexOf('.') !== 0) && (file !== 'index.js') && (file.slice(-3) === '.js');
 }).forEach(file => {

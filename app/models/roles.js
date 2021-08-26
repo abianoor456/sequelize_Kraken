@@ -1,32 +1,27 @@
-const {Sequelize, Model, DataTypes} = require('sequelize');
+'use strict';
+const { Sequelize, Model, DataTypes } = require('sequelize');
 
-class Post extends Model {
+class Roles extends Model {
+  
   static associate(models) {
-    Post.belongsTo(models.Users);
+    Roles.belongsToMany(models.Users,{ through: models.Userroles, onDelete: 'CASCADE' });
   }
-}
+};
 
-Post.init({
+Roles.init({
+
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  title: {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  desc: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  body: {
-    type: DataTypes.STRING,
-    field: 'body'
-  },
-  userId: {
-    type: DataTypes.INTEGER,
-    field: 'user_id',
-    references: {
-      model: 'user',
-      field: 'id'
-    }
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -44,11 +39,11 @@ Post.init({
   defaultScope: {
     attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'] },
   },
-  modelName: 'post',
+  modelName: 'roles',
   paranoid: true,
   underscored: true,
   freezeTableName: true,
   sequelize: global.sequelize
 });
- 
-module.exports = Post;
+
+module.exports = Roles;
