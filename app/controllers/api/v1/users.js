@@ -1,11 +1,11 @@
 const db = global.db;
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-module.exports =  (router) => {
+module.exports = (router) => {
   router.get('/', async (req, res) => {
-    const users = await db.Users.findAll({ });
-    res.json({users: users});
+    const users = await db.Users.findAll({});
+    res.json({ users: users });
   });
 
 
@@ -17,9 +17,9 @@ module.exports =  (router) => {
       }
     });
     if (user) {
-      res.json({user: user, token: user.createAPIToken()});
+      res.json({ user: user, token: user.createAPIToken() });
     } else {
-      res.status(400).json({msg: 'Invalid email or password'});
+      res.status(400).json({ msg: 'Invalid email or password' });
     }
   });
 
@@ -30,23 +30,36 @@ module.exports =  (router) => {
       }
     });
     if (user) {
-      res.json({user: user, token: user.createAPIToken()});
+      res.json({ user: user, token: user.createAPIToken() });
     } else {
-      res.status(400).json({msg: 'User not found'});
+      res.status(400).json({ msg: 'User not found' });
     }
   });
 
   router.post('/signup', async (req, res) => {
     const isAlreadyExist = await db.Users.count({
-      where: { email: req.body.email}
+      where: { email: req.body.email }
     });
     if (isAlreadyExist) {
-      return res.status(400).json({msg: 'Email already exists'});
+      return res.status(400).json({ msg: 'Email already exists' });
     }
 
     req.body.password = db.Users.getHashedPassword(req.body.password);
-    const user = await db.Users.create(req.body);
+    
+    const user = await db.Users.create({
+      email: req.body.email,
+      password: req.body.password
+    });
 
-    res.json({user: user, token: user.createAPIToken()});
+    req.body.roleId.forEach(async element => {
+      const userRole = await db.Userroles.create({
+        roleId: element,
+        userId: user.id
+      });
+    });
+
+    
+   
+    res.json({ user: user, token: user.createAPIToken() });
   });
 };
