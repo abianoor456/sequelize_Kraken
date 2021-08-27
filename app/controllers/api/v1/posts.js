@@ -7,7 +7,7 @@ module.exports = (router) => {
   router.post('/', async (req, res) => {
     req.body.userId = req.user.id;
     const post = await db.Posts.create(req.body);
-    res.json({ post: post });
+    res.status(200).json({ post: post });
   });
 
 
@@ -55,7 +55,7 @@ module.exports = (router) => {
           userId: req.body.userId
         }
       });
-      res.json({ posts: posts });
+      res.status(200).json({ posts: posts });
     }
 
   });
@@ -70,10 +70,10 @@ module.exports = (router) => {
       }
     });
     if (posts[0] === 0) {
-      res.status(400).send({ msg: 'Invalid postId or UserId' });
+      res.status(200).status(400).send({ msg: 'Invalid postId or UserId' });
     }
     else {
-      res.json({ posts: posts });
+      res.status(200).json({ posts: posts });
     }
 
 
@@ -89,10 +89,10 @@ module.exports = (router) => {
       }
     });
     if (posts[0] === 0) {
-      res.status(400).send({ msg: 'Invalid postId or UserId' });
+      res.status(200).status(400).send({ msg: 'Invalid postId or UserId' });
     }
     else {
-      res.json({ posts: posts });
+      res.status(200).json({ posts: posts });
     }
   });
 
@@ -105,7 +105,7 @@ module.exports = (router) => {
       res.status(400).send({ msg: 'Invalid postId or UserId' });
     }
     else {
-      res.json({ posts: posts });
+      res.status(200).json({ posts: posts });
     }
   });
 
@@ -121,7 +121,7 @@ module.exports = (router) => {
           userId: req.body.userId
         }
       });
-      res.json({ postCount: count });
+      res.status(200).json({ postCount: count });
     }
 
 

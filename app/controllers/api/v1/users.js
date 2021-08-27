@@ -5,7 +5,7 @@ const Op = Sequelize.Op;
 module.exports = (router) => {
   router.get('/', async (req, res) => {
     const users = await db.Users.findAll({});
-    res.json({ users: users });
+    res.status(200).json({ users: users });
   });
 
 
@@ -60,6 +60,6 @@ module.exports = (router) => {
 
     
    
-    res.json({ user: user, token: user.createAPIToken() });
+    res.status(200).json({ user: user, token: user.createAPIToken() });
   });
 };

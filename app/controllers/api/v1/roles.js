@@ -10,12 +10,12 @@ module.exports = (router) => {
       name: req.body.name,
       desc: req.body.desc
     });
-    res.json({ Roles: role });
+    res.status(200).json({ Roles: role });
   });
 
   router.get('/', async (req, res) => {
     const roles = await db.Roles.findAll();
-    res.json({ Roles: roles });
+    res.status(200).json({ Roles: roles });
   });
 
 
@@ -31,7 +31,7 @@ module.exports = (router) => {
       res.status(400).send({ msg: 'Role not found, enter correct roleId' });
     }
     else {
-      res.json({ posts: posts });
+      res.status(200).json({ posts: posts });
     }
   });
 
@@ -46,7 +46,7 @@ module.exports = (router) => {
       res.status(400).send({ msg: 'Invalid roleId' });
     }
     else {
-      res.json({ posts: posts });
+      res.status(200).json({ posts: posts });
     }
   });
 
